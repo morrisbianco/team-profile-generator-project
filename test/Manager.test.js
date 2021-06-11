@@ -21,5 +21,5 @@ test("Can get office number via getOffice()", () => {
     const result = 123;
     const getOfficeNum = new Manager("name", 123, "email@", result);
 
-    expect(getOfficeNum.getOffice()).toBe(result);
+    expect(getOfficeNum.getOfficeNumber()).toBe(result);
 });

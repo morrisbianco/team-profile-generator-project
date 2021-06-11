@@ -1,3 +1,4 @@
+// codes to pull in the required aspects for the inquirer prompts and html render
 const path = require("path");
 const fs = require("fs");
 
@@ -13,16 +14,20 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 const { REPL_MODE_STRICT } = require("repl");
 
+// Renders the html with the now filled array
 const renderHTML = () => {
-if (!fs.existsSync(OUTPUT_DIR)){
+    // Creates a directory for output if it doesn't exist
+    if (!fs.existsSync(OUTPUT_DIR)){
     fs.mkdirSync(OUTPUT_DIR);
   }
   
   fs.writeFileSync(outputPath, render(employees));
 };
 
+// empty array to fill with the prompt responses
 let employees = [];
 
+// Prompt that allows you to continue building employees or render the html
 const createEmployee = () => {
     inquirer.prompt([
         {
@@ -36,6 +41,7 @@ const createEmployee = () => {
             ]
         },
     ]).then((response) => {
+        // Checks if the response was for the engineer or intern or to end it and runs the corresponding code 
         if (response.employee === "Engineer") {
             createEngineer();
         } else if (response.employee === "Intern") {
@@ -46,6 +52,7 @@ const createEmployee = () => {
     })
 }
 
+// creates the engineer
 const createEngineer = () => {
     inquirer.prompt([
         {
@@ -76,6 +83,7 @@ const createEngineer = () => {
         })
 }
 
+// creates the intern
 const createIntern = () => {
     inquirer.prompt([
         {
@@ -106,6 +114,7 @@ const createIntern = () => {
         })
 }
 
+// Starts the prompts and fills out manager profile
 const init = () => {
     inquirer
         .prompt([
@@ -142,6 +151,7 @@ const init = () => {
         .then((response) => {
             const manager = new Manager(response.name, response.id, response.email, response.officeNumber);
             employees.push(manager);
+            // checks which employee type the user inputted
             if (response.employee === "Engineer") {
                 createEngineer();
             } else {
@@ -150,4 +160,5 @@ const init = () => {
         });
 }
 
+// starts the first prompt
 init();
